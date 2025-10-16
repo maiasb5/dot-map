@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drop a Dot on the Graph</title>
+  <style>
+    body {
+      background: #f7f7f9;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    canvas {
+      border: 2px solid #111;
+      background: white;
+      cursor: crosshair;
+      border-radius: 12px;
+    }
+
+    #saveData {
+      margin-top: 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
+
+    #saveData:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Drop Your Dot 💫</h1>
+  <p>Click anywhere on the graph to place a dot!</p>
+  <canvas id="graph" width="600" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById("graph");
+    const ctx = canvas.getContext("2d");
+    const dots = [];
+
+    // Draw X and Y axes
+    function drawAxes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
+
+      // X axis
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      ctx.lineTo(canvas.width, canvas.height / 2);
+      ctx.stroke();
+
+      // Y axis
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+
+      // Redraw all dots
+      for (const d of dots) {
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "#ff007f";
+        ctx.fill();
+      }
+    }
+
+    drawAxes();
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      dots.push({ x, y });
+      drawAxes();
+    });
+  </script>
+</body>
+</html>
